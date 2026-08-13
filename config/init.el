@@ -139,8 +139,25 @@
 
 (use-package which-key
   :ensure t
-  :init (setq which-key-idle-delay 0.3)
-  :config (which-key-mode 1))
+  :init (setq which-key-idle-delay 0.3
+              ;; Defaults to 0, which butts every column against the next one.
+              which-key-add-column-padding 3
+              which-key-separator " → "
+              which-key-min-display-lines 6
+              which-key-max-description-length 32)
+  :config
+  ;; Name the leader groups, so they stop rendering as a wall of "+prefix".
+  (which-key-add-key-based-replacements
+    "SPC c" "code"
+    "SPC d" "debug"
+    "SPC f" "find"
+    "SPC g" "goto/git"
+    "SPC gw" "worktree"
+    "SPC l" "lsp"
+    "SPC p" "peek"
+    "SPC r" "refactor"
+    "SPC x" "diagnostics")
+  (which-key-mode 1))
 
 (use-package indent-bars                  ; indent-blankline
   :ensure t
