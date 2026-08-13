@@ -97,6 +97,7 @@
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
   (load-theme 'doom-one t)
+  (require 'doom-themes-ext-org)          ; extension file, not autoloaded
   (doom-themes-org-config))
 
 (use-package nerd-icons :ensure t)        ; web-devicons
@@ -179,6 +180,7 @@
               corfu-popupinfo-delay '(0.3 . 0.2))
   :config
   (global-corfu-mode 1)
+  (require 'corfu-popupinfo)              ; extension file, not autoloaded
   (corfu-popupinfo-mode 1))
 
 (use-package cape                         ; cmp sources: path / buffer
@@ -229,6 +231,7 @@
   :ensure t
   :config
   (global-diff-hl-mode 1)
+  (require 'diff-hl-flydiff)              ; extension file, not autoloaded
   (diff-hl-flydiff-mode 1)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 (use-package git-link :ensure t)          ; gitlinker

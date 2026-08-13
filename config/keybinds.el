@@ -10,12 +10,19 @@
   :demand t
   :after evil
   :config
-  (general-evil-setup)
-  (general-create-definer viic/leader
-    :states '(normal visual motion)
-    :keymaps 'override
-    :prefix "SPC"
-    :global-prefix "M-SPC"))
+  (general-evil-setup))
+
+(defun viic/leader (&rest args)
+  "Bind ARGS under the SPC leader, as `general-define-key' would.
+A function, not a `general-create-definer' macro: this file is byte-compiled
+by Nix, and a definer macro only exists once the file has been *loaded*, so
+compiling a call to one yields \"Invalid function: viic/leader\"."
+  (apply #'general-define-key
+         :states '(normal visual motion)
+         :keymaps 'override
+         :prefix "SPC"
+         :global-prefix "M-SPC"
+         args))
 
 ;; ===== Helper commands (the nixvim `action.__raw` blocks) =====
 
