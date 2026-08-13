@@ -15,6 +15,11 @@
   :init
   (setq inhibit-startup-screen t
         ring-bell-function 'ignore
+        ;; Nix byte-compiles this file but cannot native-compile it, so Emacs
+        ;; does that asynchronously on first run — and every `use-package`
+        ;; :config body trips "might not be defined at runtime", popping up
+        ;; *Warnings* at every startup. Keep it in the compile log instead.
+        native-comp-async-report-warnings-errors 'silent
         use-short-answers t
         make-backup-files nil            ; backup = false
         auto-save-default nil            ; swapfile = false
@@ -115,7 +120,15 @@
               centaur-tabs-set-icons t
               centaur-tabs-set-close-button nil
               centaur-tabs-set-modified-marker t)
-  :config (centaur-tabs-mode 1))
+  :config
+  ;; Internal buffers (*Warnings*, *Messages*, compile logs…) are not files —
+  ;; keep them off the tab line, like bufferline does.
+  (defun viic/centaur-tabs-hide-tab (buffer)
+    (let ((name (buffer-name buffer)))
+      (and (string-prefix-p "*" name)
+           (not (member name '("*dashboard*" "*scratch*" "*vterm*"))))))
+  (setq centaur-tabs-hide-tab-function #'viic/centaur-tabs-hide-tab)
+  (centaur-tabs-mode 1))
 
 (use-package dashboard                    ; alpha
   :ensure t
