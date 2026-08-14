@@ -171,7 +171,14 @@
   :ensure t
   :hook ((prog-mode . symbol-overlay-mode)))
 
-(use-package treemacs :ensure t)          ; snacks explorer
+(use-package treemacs                     ; snacks explorer
+  :ensure t
+  :config
+  ;; Treemacs' workspaces accumulate every project you ever opened. Mirror the
+  ;; snacks explorer instead: show the current project, and only that, tracking
+  ;; whichever buffer is selected.
+  (require 'treemacs-project-follow-mode) ; separate file, not autoloaded
+  (treemacs-project-follow-mode 1))
 (use-package treemacs-evil :ensure t :after (treemacs evil))
 
 ;; Icon theme closest to VS Code's Material Icon Theme: all-the-icons carries
