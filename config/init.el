@@ -173,10 +173,17 @@
 
 (use-package treemacs :ensure t)          ; snacks explorer
 (use-package treemacs-evil :ensure t :after (treemacs evil))
-(use-package treemacs-nerd-icons
+
+;; Icon theme closest to VS Code's Material Icon Theme: all-the-icons carries
+;; the Material Design / Devicons / FileIcons sets with per-filetype colours.
+;; The fonts are installed system-wide by the desktop preset, not by
+;; `all-the-icons-install-fonts'.
+(use-package all-the-icons :ensure t)
+(use-package treemacs-all-the-icons
   :ensure t
-  :after (treemacs nerd-icons)
-  :config (treemacs-load-theme "nerd-icons"))
+  :after (treemacs all-the-icons)
+  :demand t
+  :config (treemacs-load-theme "all-the-icons"))
 
 ;; ===== Completion & search (telescope + nvim-cmp) =====
 (use-package vertico
