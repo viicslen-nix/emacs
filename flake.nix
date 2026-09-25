@@ -61,7 +61,7 @@
         ];
 
         emacs = pkgs.emacsWithPackagesFromUsePackage {
-          package = pkgs.emacs30-pgtk;
+          package = pkgs.emacs-pgtk;
           # Both files are scraped for `:ensure t` and written as the init file.
           config = lib.concatMapStringsSep "\n" builtins.readFile [
             ./config/init.el
