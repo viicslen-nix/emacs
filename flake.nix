@@ -11,11 +11,17 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
+        inputs.treefmt-nix.flakeModule
         ./apps.nix
       ];
 
@@ -87,7 +93,12 @@
           meta.mainProgram = "emacs";
         };
 
-        formatter = pkgs.alejandra;
+        treefmt.imports = [./treefmt.nix];
+
+        # treefmt runs `statix fix`, which skips lints it cannot fix (W20).
+        checks.statix = pkgs.runCommandLocal "statix-check" {} ''
+          ${lib.getExe pkgs.statix} check ${./.} && touch $out
+        '';
 
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
